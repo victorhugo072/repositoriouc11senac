@@ -95,8 +95,6 @@ public class ProdutosDAO {
         }
         return listagem;
     }
-
-    ------------------------------------------------------------------
 public ArrayList<ProdutosDTO> listarProdutosVendidos() {
 
         listagem.clear();
@@ -139,4 +137,29 @@ public ArrayList<ProdutosDTO> listarProdutosVendidos() {
         return listagem;
     }
 
+    public void venderProduto(int id) {
+        conn = new conectaDAO().connectDB();
+        try {
+            String sql = "UPDATE produtos SET status = ? WHERE id = ?";
+            prep = conn.prepareStatement(sql);
+            prep.setString(1, "Vendido");
+            prep.setInt(2, id);
+
+            prep.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (prep != null) {
+                    prep.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
